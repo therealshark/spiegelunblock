@@ -28,13 +28,14 @@
 
     // Walkes through nodes and decodes the text
     function nodeWalker(nodes){
-        nodes.forEach(node => {
+        for(var i = 0; i < nodes.length; i++){
+            var node = nodes[i];
             if(isTextNode(node)){
                 node.data = decode(node.data);
             }else if(node.nodeName !== 'A'){ // <- links aren't encoded, so no need to decode them
                 nodeWalker(node.childNodes);
             }
-        });
+        }
     }
 
     function start(){
