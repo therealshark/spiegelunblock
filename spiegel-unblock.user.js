@@ -50,11 +50,7 @@
         }
 
         // remove the blurring
-        for(var x = 0; x<2; x++){
-            blurDiv.classList.forEach(cssclass => {
-                blurDiv.classList.remove(cssclass);
-            });
-        }
+        blurDiv.className = '';
 
         // decode the text
         nodeWalker(document.querySelectorAll('.obfuscated-content .obfuscated'));
