@@ -19,8 +19,8 @@
 
     // "Decodes" the Text. Caesarchiffre with an offset of one?, cooooome oooon
     function decode(text){
-        return text.split(' ').map(word => {
-            return word.split('').map(char => {
+        return text.split(' ').map(function(word){
+            return word.split('').map(function(char){
                 return String.fromCharCode(char.charCodeAt(0) - 1);
             }).join('');
         }).join(' ');
