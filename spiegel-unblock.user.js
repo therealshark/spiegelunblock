@@ -26,7 +26,7 @@
         }).join(' ');
     }
 
-    // Walkes through nodes and decodes the text
+    // Walks through nodes and decodes the text
     function nodeWalker(nodes){
         for(var i = 0; i < nodes.length; i++){
             var node = nodes[i];
@@ -57,7 +57,7 @@
         nodeWalker(document.querySelectorAll('.obfuscated-content .obfuscated'));
     }
 
-    // wait for everythign to be initialized
+    // lets wait for everything to be initialized
     function waitForStart(){
         if(document.querySelector('.lp_mwi_svg-filter-blur')){
             start();
