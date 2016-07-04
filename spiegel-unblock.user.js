@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.1
+// @version      0.3
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
 // @match        http://www.spiegel.de/*
@@ -17,13 +17,26 @@
         return node.nodeType == node.TEXT_NODE;
     }
 
+    var decodableClasses = ['text-link-int', 'text-link-ext', 'lp-text-link-int', 'lp-text-link-ext', 'spCelink'];
+    function isDecodableNode(node){
+        return node.nodeType == node.ELEMENT_NODE && decodableClasses.every(function(cssclass){
+            return node.className.indexOf(cssclass) == -1;
+        });
+    }
+
     // "Decodes" the Text. Caesarchiffre with an offset of one?, cooooome oooon
+    var decodeTable = {
+        177: '&',
+        178: '!',
+        180: ';',
+        181: '=',
+        32: ' '
+    };
     function decode(text){
-        return text.split(' ').map(function(word){
-            return word.split('').map(function(char){
-                return String.fromCharCode(char.charCodeAt(0) - 1);
+            return text.split('').map(function(char){
+                var charCode = char.charCodeAt(0);
+                return decodeTable[charCode] || String.fromCharCode(charCode - 1);
             }).join('');
-        }).join(' ');
     }
 
     // Walks through nodes and decodes the text
@@ -32,7 +45,7 @@
             var node = nodes[i];
             if(isTextNode(node)){
                 node.data = decode(node.data);
-            }else if(node.nodeName !== 'A'){ // <- links aren't encoded, so no need to decode them
+            }else if(isDecodableNode(node)){ // <- links aren't encoded, so no need to decode them
                 nodeWalker(node.childNodes);
             }
         }
