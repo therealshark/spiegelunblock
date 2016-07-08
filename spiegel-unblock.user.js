@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.3
+// @version      0.4
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
 // @match        http://www.spiegel.de/*
@@ -12,6 +12,10 @@
 
 (function() {
     'use strict';
+
+    function log(txt){
+        console.log('[SPIEGEL-Unblock]: ' + txt);
+    }
 
     function isTextNode(node){
         return node.nodeType == node.TEXT_NODE;
@@ -33,10 +37,10 @@
         32: ' '
     };
     function decode(text){
-            return text.split('').map(function(char){
-                var charCode = char.charCodeAt(0);
-                return decodeTable[charCode] || String.fromCharCode(charCode - 1);
-            }).join('');
+        return text.split('').map(function(char){
+            var charCode = char.charCodeAt(0);
+            return decodeTable[charCode] || String.fromCharCode(charCode - 1);
+        }).join('');
     }
 
     // Walks through nodes and decodes the text
@@ -53,8 +57,8 @@
 
     function start(){
         // Find the div
-        var blurDiv = document.querySelector('.lp_mwi_svg-filter-blur');
-
+        var blurDiv = document.querySelector('.obfuscated-content').parentElement;
+        log('found blur div');
         // remove the crap overlays
         while(blurDiv.nextSibling !== null){
             blurDiv.nextSibling.remove();
@@ -62,25 +66,30 @@
         while(blurDiv.previousSibling !== null){
             blurDiv.previousSibling.remove();
         }
-
+        log('removed overlays');
         // remove the blurring
         blurDiv.className = '';
-
+        log('removed blurring');
+        log('starting to "decode" text');
         // decode the text
         nodeWalker(document.querySelectorAll('.obfuscated-content .obfuscated'));
+        log('done');
     }
 
     // lets wait for everything to be initialized
     function waitForStart(){
-        if(document.querySelector('.lp_mwi_svg-filter-blur')){
+        if(document.querySelector('[data-lp="mwi-purchase-form"]')){
+            log("Initialized");
             start();
         }else{
             setTimeout(waitForStart, 250);
+            log("waiting for initialization");
         }
     }
 
     // Is it a paid article?
     if(document.querySelector('h2.article-title a.laterpay-icon')){
+        log("paid article");
         waitForStart();
     }
 })();
