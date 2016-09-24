@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.4
+// @version      0.5
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
 // @match        http://www.spiegel.de/*
@@ -73,6 +73,9 @@
         log('starting to "decode" text');
         // decode the text
         nodeWalker(document.querySelectorAll('.obfuscated-content .obfuscated'));
+        log('decoded the text');
+        document.querySelector('p.js-spiegelplus-obfuscated-intro').remove();
+        log('removed buy-text');
         log('done');
     }
 
