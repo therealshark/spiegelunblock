@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.5
+// @version      0.6
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
 // @match        http://www.spiegel.de/*
@@ -91,7 +91,7 @@
     }
 
     // Is it a paid article?
-    if(document.querySelector('h2.article-title a.laterpay-icon')){
+    if(document.querySelector('h2.article-title .spiegelplus')){
         log("paid article");
         waitForStart();
     }
