@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.6
+// @version      0.7
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
 // @match        http://www.spiegel.de/*
@@ -95,4 +95,20 @@
         log("paid article");
         waitForStart();
     }
+
+    // remove adblock blocker
+    const style = document.createElement("style");
+    style.innerHTML = `
+        #wrapper-content {
+            opacity: 1 !important;
+            filter: unset !important;
+            pointer-events: all !important;
+        }
+
+        .ua-detected {
+            display: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+
 })();
