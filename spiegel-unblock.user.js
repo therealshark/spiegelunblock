@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Unlock spiegel.de articles
 // @namespace    theshark
-// @version      0.7
+// @version      0.8
 // @description  Unblocks articles on spiegel.de
 // @author       theshark
-// @match        http://www.spiegel.de/*
+// @match        http://*.spiegel.de/*
 // @grant        none
 // @updateURL    https://github.com/therealshark/spiegelunblock/raw/master/spiegel-unblock.user.js
 // @downloadURL  https://github.com/therealshark/spiegelunblock/raw/master/spiegel-unblock.user.js
@@ -91,7 +91,7 @@
     }
 
     // Is it a paid article?
-    if(document.querySelector('h2.article-title .spiegelplus')){
+    if(document.querySelector(".spArticleContent a.article-icon.spiegelplus")){
         log("paid article");
         waitForStart();
     }
